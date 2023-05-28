@@ -1,41 +1,33 @@
 # python3
 
+def build_heap(a):
+    swaps = []  
+    #Izveido sarakstu, kur glabājas apmaiņu operācijas
+    n = len(a)  
+    #Iegūst masīva garumu
 
-def convert_to_heap(n, a):
-    swaps = []
+    #Sākot no otrā elementa līdz pēdējam elementam atkārto
+    for i in range(1, n):
+        #Veic "sift-up" operāciju, apmainot mezglu ar tā parent
+        
+        while i > 0 and a[(i - 1) // 2] > a[i]:  #Pārbauda, vai vecāks ir lielāks par pašreizējo mezglu
+            a[i], a[(i - 1) // 2] = a[(i - 1) // 2], a[i]  #Apmaina mezglu ar vecāku
+            swaps.append(((i - 1) // 2, i))  #Pievieno apmaiņas operāciju sarakstam
+            i = (i - 1) // 2  #Atjauno indeksu nākamajai iterācijai
 
-    def sift_down(i):
-        min_index = i
-        left_child = 2 * i + 1
-        right_child = 2 * i + 2
+    return swaps  
+    #Atgriež apmaiņu operāciju sarakstu
 
-        if left_child < n and a[left_child] < a[min_index]:
-            min_index = left_child
+#Izlasīt ievadi
+n = int(input())  #Elementu skaits
+a = list(map(int, input().split()))  #Masīva elementi
 
-        if right_child < n and a[right_child] < a[min_index]:
-            min_index = right_child
+#Veidot koku un iegūt apmaiņu operācijas
+swaps = build_heap(a)
 
-        if i != min_index:
-            a[i], a[min_index] = a[min_index], a[i]
-            swaps.append((i, min_index))
-            sift_down(min_index)
-
-    for i in range(n // 2 - 1, -1, -1):
-        sift_down(i)
-
-    return swaps
-
-
-# Read input
-n = int(input())
-a = list(map(int, input().split()))
-
-# Convert array to heap
-swaps = convert_to_heap(n, a)
-
-# Print the number of swaps
+#Izvadīt apmaiņu operāciju skaitu
 print(len(swaps))
 
-# Print the swap operations
+#Izvadīt apmaiņu operācijas
 for swap in swaps:
     print(swap[0], swap[1])
