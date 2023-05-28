@@ -3,10 +3,10 @@
 def build_heap(a):
     swaps = []  
     #Izveido sarakstu, kur glabājas apmaiņu operācijas
+    
     n = len(a)  
     #Iegūst masīva garumu
 
-    #Sākot no otrā elementa līdz pēdējam elementam atkārto
     for i in range(1, n):
         #Veic "sift-up" operāciju, apmainot mezglu ar tā parent
         
@@ -15,9 +15,9 @@ def build_heap(a):
             swaps.append(((i - 1) // 2, i))  #Pievieno apmaiņas operāciju sarakstam
             i = (i - 1) // 2  #Atjauno indeksu nākamajai iterācijai
 
+    #Atgriež apmaiņu operāciju sarakstu       
     return swaps  
-    #Atgriež apmaiņu operāciju sarakstu
-
+   
 #Izlasīt ievadi
 n = int(input())  #Elementu skaits
 a = list(map(int, input().split()))  #Masīva elementi
