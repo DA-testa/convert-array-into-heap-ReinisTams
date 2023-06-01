@@ -1,33 +1,52 @@
 # python3
 
-def build_heap(a):
-    swaps = []  
-    #Izveido sarakstu, kur glabājas apmaiņu operācijas
-    
-    n = len(a)  
-    #Iegūst masīva garumu
+def build_heap(data):
+    swaps = []
+    n = len(data)
+    for i in range(n // 2 - 1, -1, -1):
+        sift_down(data, i, n, swaps)
 
-    for i in range(1, n):
-        #Veic "sift-up" operāciju, apmainot mezglu ar tā parent
-        
-        while i > 0 and a[(i - 1) // 2] > a[i]:  #Pārbauda, vai vecāks ir lielāks par pašreizējo mezglu
-            a[i], a[(i - 1) // 2] = a[(i - 1) // 2], a[i]  #Apmaina mezglu ar vecāku
-            swaps.append(((i - 1) // 2, i))  #Pievieno apmaiņas operāciju sarakstam
-            i = (i - 1) // 2  #Atjauno indeksu nākamajai iterācijai
+    return swaps
 
-    #Atgriež apmaiņu operāciju sarakstu       
-    return swaps  
-   
-#Izlasīt ievadi
-n = int(input())  #Elementu skaits
-a = list(map(int, input().split()))  #Masīva elementi
 
-#Veidot koku un iegūt apmaiņu operācijas
-swaps = build_heap(a)
+def sift_down(data, i, n, swaps):
+    index = i
+    left = 2 * i + 1
+    right = 2 * i + 2
 
-#Izvadīt apmaiņu operāciju skaitu
-print(len(swaps))
+    if left < n and data[left] < data[index]:
+        index = left
+    if right < n and data[right] < data[index]:
+        index = right
+    if i != index:
+        data[i], data[index] = data[index], data[i]
+        swaps.append((i, index))
+        sift_down(data, index, n, swaps)
 
-#Izvadīt apmaiņu operācijas
-for swap in swaps:
-    print(swap[0], swap[1])
+
+def main():
+    choice = input("Enter 'I' for interactive input or 'F' for file input: ")
+    if choice == "I":
+        n = int(input("Enter the number of elements: "))
+        data = list(map(int, input("Enter the elements separated by spaces: ").split()))
+        assert len(data) == n
+    elif choice == "F":
+        file_path = input("Enter the file path: ")
+        with open(file_path, 'r') as file:
+            n = int(file.readline())
+            data = list(map(int, file.readline().split()))
+            assert len(data) == n
+    else:
+        print("Invalid input. Please enter 'I' or 'F'.")
+        return
+
+    swaps = build_heap(data)
+    assert len(swaps) <= 4 * n
+    print("Number of swaps:", len(swaps))
+    for i, j in swaps:
+        print(i, j)
+
+
+if __name__ == "__main__":
+    main()
+
